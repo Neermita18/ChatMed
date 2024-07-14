@@ -1,0 +1,5 @@
+https://huggingface.co/datasets/Bahareh0281/Medical_Queries_RAG
+https://dermnetnz.org/images
+from datasets import load_dataset
+
+ds = load_dataset("Bahareh0281/Medical_Queries_RAG")
