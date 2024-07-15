@@ -49,3 +49,58 @@ with col2:
                 st.write("RAG Model Response:", rag_response)
             else:
                 st.write("Please enter a single sentence for RAG analysis.")
+                
+            
+    """Check this too
+import streamlit as st
+from PIL import Image
+import model1  # CLIP functionality
+import model2  # RAG functionality
+
+# Initialize session state
+if "messages_text" not in st.session_state:
+    st.session_state["messages_text"] = []
+if "messages_image" not in st.session_state:
+    st.session_state["messages_image"] = []
+
+# Layout with two columns
+col1, col2 = st.columns(2)
+
+with col1:
+    st.header("Text-to-Text Chatbot")
+
+    user_input_text = st.chat_input("Enter your question here...", key="text-chat-input")
+    
+    if user_input_text:
+        st.session_state["messages_text"].append({"role": "user", "content": user_input_text})
+        text_response = model1.ask_text_chatbot(user_input_text)
+        st.session_state["messages_text"].append({"role": "assistant", "content": text_response})
+        
+    for message in st.session_state["messages_text"]:
+        st.chat_message(message["role"], message["content"], key=f"text-chat-{len(st.session_state['messages_text'])}")
+
+with col2:
+    st.header("Image-to-Text Chatbot")
+
+    uploaded_file = st.file_uploader("Choose an image...", type="jpg")
+    text_input_image = st.chat_input("Enter text input (comma-separated for list of sentences or a single sentence):", key="image-chat-input")
+    
+    if uploaded_file:
+        image = Image.open(uploaded_file)
+        st.image(image, caption='Uploaded Image.', use_column_width=True)
+
+        if text_input_image:
+            st.session_state["messages_image"].append({"role": "user", "content": text_input_image})
+            
+            if "," in text_input_image:
+                sentences = [sentence.strip() for sentence in text_input_image.split(",")]
+                logits, probs = model1.image_text_similarity(image, sentences)
+                clip_response = f"Image-text similarity scores (logits_per_image): {logits}\nProbabilities (softmaxed): {probs}"
+                st.session_state["messages_image"].append({"role": "assistant", "content": clip_response})
+            else:
+                rag_response = model2.analyze_image_and_text_rag(image, text_input_image)
+                st.session_state["messages_image"].append({"role": "assistant", "content": rag_response})
+        
+        for message in st.session_state["messages_image"]:
+            st.chat_message(message["role"], message["content"], key=f"image-chat-{len(st.session_state['messages_image'])}")
+    """
